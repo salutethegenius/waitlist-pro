@@ -3,6 +3,9 @@ from app import db
 from models import Participant, Admin
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from functools import wraps
+import logging
+
+logger = logging.getLogger(__name__)
 
 def login_required(f):
     @wraps(f)
@@ -38,11 +41,14 @@ def register_routes(app):
         if request.method == 'POST':
             username = request.form['username']
             password = request.form['password']
+            logger.info(f"Login attempt with username: {username}")
             if username == 'admin' and password == 'admin123':
                 session['admin_id'] = 1  # Set a dummy admin_id
+                logger.info("Admin login successful")
                 flash('Logged in successfully.', 'success')
                 return redirect(url_for('admin_dashboard'))
             else:
+                logger.warning("Admin login failed")
                 flash('Invalid username or password.', 'error')
         return render_template('admin_login.html')
 
