@@ -3,24 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KemisDigital - Advanced Digital Marketing Strategies</title>
+    <title>KemisAcademy - Advanced Digital Marketing Strategies</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <div class="container">
         <header>
-            <img src="https://kemisdigital.com/cdn/shop/files/0eb52e9522bee17a6ae72cdeda78df1d_1200_80.webp?v=1713491076&width=300" alt="KemisDigital Logo" width="300">
+            <img src="{{ url_for('static', filename='images/kemislogo.webp') }}" alt="Kemis Academy Logo" width="300">
             <nav>
                 <ul>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ url_for('admin_login') }}">Admin Login</a></li>
                 </ul>
             </nav>
-        </header>
-        <main>
             <h1>Advanced Digital Marketing Strategies</h1>
             <p class="subtitle">Join our waitlist for the upcoming January 2025 event!</p>
+        </header>
+        <main>
             <div class="chat-container">
                 <div id="chat-output" class="chat-output"></div>
                 <div class="chat-input-container">

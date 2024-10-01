@@ -1,12 +1,14 @@
 :root {
     --primary-color: #4a90e2;    /* Blue */
-    --secondary-color: #f5a623;  /* Gold */
-    --background-color: #0f1524; /* Dark blue background */
-    --text-color: #ffffff;       /* White text */
+    --secondary-color: #4a90e2;  /* Green */
+    --accent-color: #e74c3c;     /* Red */
+    --background-color: #121212; /* Dark blue background */
+    --text-color: #ffffff;       /* Light gray for text */
+    --light-text-color: #ffffff; /* Lighter gray for secondary text */
 }
 
 body, html {
-    font-family: 'Roboto', Arial, sans-serif;
+    font-family: 'Roboto', 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--background-color);
@@ -15,7 +17,7 @@ body, html {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -25,8 +27,15 @@ header {
     margin-bottom: 20px;
 }
 
-header img {
-    margin-bottom: 20px;
+h1 {
+    color: var(--primary-color);
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--light-text-color);
+    font-size: 1em;
 }
 
 nav ul {
@@ -40,39 +49,27 @@ nav ul li {
 }
 
 nav ul li a {
-    color: var(--primary-color);
+    color: var(--secondary-color);
     text-decoration: none;
     font-weight: bold;
 }
 
-h1 {
-    color: var(--primary-color);
-    font-size: 2.5em;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.subtitle {
-    color: var(--secondary-color);
-    font-size: 1.2em;
-    text-align: center;
-    margin-bottom: 30px;
-}
-
 .chat-container {
+    display: flex;
+    flex-direction: column;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
-    padding: 20px;
+    padding: 10px;
     max-width: 600px;
     margin: 0 auto;
+    height: 200px;
 }
 
 .chat-output {
-    min-height: 200px;
-    max-height: 300px;
+    flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 20px;
-    padding: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
@@ -83,35 +80,110 @@ h1 {
 
 #user-input {
     flex-grow: 1;
-    padding: 10px;
+    padding: 8px;
     border: none;
     background-color: rgba(255, 255, 255, 0.1);
     color: var(--text-color);
     border-radius: 4px 0 0 4px;
+    font-size: 0.9em;
 }
 
 #send-button {
-    padding: 10px 20px;
+    padding: 8px 16px;
     border: none;
-    background-color: var(--primary-color);
+    background-color: var(--accent-color);
     color: white;
     cursor: pointer;
     border-radius: 0 4px 4px 0;
+    font-size: 0.9em;
 }
 
-.message {
-    margin-bottom: 10px;
-    padding: 8px 12px;
-    border-radius: 4px;
+/* Admin styles (unchanged) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
 }
 
-.bot {
+th, td {
+    padding: 10px;
+    border: 1px solid var(--light-text-color);
+    text-align: left;
+}
+
+th {
     background-color: var(--primary-color);
     color: white;
 }
 
-.user {
+.login-form, .update-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login-form input, .update-form input, .update-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--light-text-color);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+.login-form button, .update-form button {
+    width: 100%;
+    padding: 10px;
     background-color: var(--secondary-color);
     color: white;
-    text-align: right;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.error {
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.alert-error {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.message {
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.user {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
+
+.bot {
+    background-color: var(--secondary-color);
+    color: white;
+    align-self: flex-start;
 }
