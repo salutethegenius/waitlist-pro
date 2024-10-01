@@ -13,14 +13,14 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Start Flask App"
+args = "Build"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Flask Server"
+args = "Run Flask App"
 
 [[workflows.workflow]]
-name = "Start Flask App"
+name = "Build"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -28,11 +28,10 @@ agentRequireRestartOnSave = false
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
-waitForPort = 5000
+args = "pip install -r requirements.txt"
 
 [[workflows.workflow]]
-name = "Flask Server"
+name = "Run Flask App"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -40,11 +39,13 @@ agentRequireRestartOnSave = false
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
+args = "python app.py"
 waitForPort = 5000
 
 [deployment]
-run = ["sh", "-c", "python main.py"]
+deploymentTarget = "cloudrun"
+build = ["sh", "-c", "run"]
+run = ["sh", "-c", "run"]
 
 [[ports]]
 localPort = 5000
