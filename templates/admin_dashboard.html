@@ -40,6 +40,27 @@
                     {% endfor %}
                 </tbody>
             </table>
+
+            <h2>Send Update to All Participants</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{ url_for('send_update') }}">
+                <div>
+                    <label for="subject">Subject:</label>
+                    <input type="text" id="subject" name="subject" required>
+                </div>
+                <div>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                <button type="submit">Send Update</button>
+            </form>
+
             <a href="{{ url_for('admin_logout') }}">Logout</a>
         </main>
     </div>

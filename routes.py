@@ -1,9 +1,10 @@
 import logging
-from flask import render_template, request, jsonify, redirect, url_for, session
-from extensions import app, db
+from flask import render_template, request, jsonify, redirect, url_for, session, flash
+from extensions import app, db, mail
 from models import Participant
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from functools import wraps
+from flask_mail import Message
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -85,4 +86,30 @@ def delete_participant(participant_id):
     participant = Participant.query.get_or_404(participant_id)
     db.session.delete(participant)
     db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/send_update', methods=['POST'])
+@admin_required
+def send_update():
+    subject = request.form.get('subject')
+    message = request.form.get('message')
+    
+    if not subject or not message:
+        flash('Subject and message are required.', 'error')
+        return redirect(url_for('admin_dashboard'))
+    
+    participants = Participant.query.all()
+    
+    for participant in participants:
+        email_message = Message(subject=subject,
+                                recipients=[participant.email],
+                                body=message)
+        try:
+            mail.send(email_message)
+            logger.info(f'Update email sent to {participant.email}')
+        except Exception as e:
+            logger.error(f'Failed to send email to {participant.email}: {str(e)}')
+            flash(f'Failed to send email to {participant.email}', 'error')
+    
+    flash('Update sent successfully to all participants.', 'success')
     return redirect(url_for('admin_dashboard'))
