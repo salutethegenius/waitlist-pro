@@ -55,52 +55,35 @@ nav ul li a {
 }
 
 .chat-container {
+    display: flex;
+    align-items: center;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    padding: 20px;
-    max-width: 600px;
+    padding: 10px;
+    max-width: 800px;
     margin: 0 auto;
 }
 
-.chat-messages {
-    height: 400px;
-    overflow-y: auto;
-    margin-bottom: 20px;
-    padding: 10px;
+.chat-message {
+    flex-grow: 1;
+    margin-right: 10px;
+    padding: 5px 10px;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-}
-
-.message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.message.bot {
-    background-color: var(--primary-color);
-    color: white;
-    align-self: flex-start;
-}
-
-.message.user {
-    background-color: var(--secondary-color);
-    color: white;
-    align-self: flex-end;
-    text-align: right;
-}
-
-.chat-input {
-    display: flex;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #user-input {
-    flex-grow: 1;
+    flex-grow: 2;
     padding: 10px;
     border: none;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.1);
     color: var(--text-color);
+    margin-right: 10px;
 }
 
 #send-button {
@@ -109,10 +92,10 @@ nav ul li a {
     background-color: var(--accent-color);
     color: white;
     cursor: pointer;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
 }
 
-/* Admin styles */
+/* Admin styles (unchanged) */
 table {
     width: 100%;
     border-collapse: collapse;

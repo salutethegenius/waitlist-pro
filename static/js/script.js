@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatMessages = document.querySelector('.chat-messages');
+    const chatMessage = document.getElementById('chat-message');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
 
@@ -19,19 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
         fullName: ''
     };
 
-    function addMessage(content, isUser = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.classList.add('message');
-        messageDiv.classList.add(isUser ? 'user' : 'bot');
-        messageDiv.textContent = content;
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+    function displayMessage(content, isUser = false) {
+        chatMessage.textContent = content;
+        chatMessage.className = 'chat-message ' + (isUser ? 'user' : 'bot');
     }
 
     function handleUserInput() {
         const userMessage = userInput.value.trim();
         if (userMessage) {
-            addMessage(userMessage, true);
+            displayMessage(userMessage, true);
             processUserInput(userMessage);
             userInput.value = '';
         }
@@ -42,9 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
             case 1:
                 if (input.toLowerCase() === 'yes') {
                     currentStep++;
-                    setTimeout(() => addMessage(botMessages[2]), 500);
+                    setTimeout(() => displayMessage(botMessages[2]), 500);
                 } else {
-                    addMessage("No problem! If you change your mind, feel free to start over.");
+                    displayMessage("No problem! If you change your mind, feel free to start over.");
                     currentStep = 0;
                 }
                 break;
@@ -52,18 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (validateEmail(input)) {
                     userInfo.email = input;
                     currentStep++;
-                    setTimeout(() => addMessage(botMessages[3]), 500);
+                    setTimeout(() => displayMessage(botMessages[3]), 500);
                 } else {
-                    addMessage("That doesn't look like a valid email. Please try again.");
+                    displayMessage("That doesn't look like a valid email. Please try again.");
                 }
                 break;
             case 3:
                 if (validatePhone(input)) {
                     userInfo.phone = input;
                     currentStep++;
-                    setTimeout(() => addMessage(botMessages[4]), 500);
+                    setTimeout(() => displayMessage(botMessages[4]), 500);
                 } else {
-                    addMessage("That doesn't look like a valid phone number. Please try again.");
+                    displayMessage("That doesn't look like a valid phone number. Please try again.");
                 }
                 break;
             case 4:
@@ -93,14 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                addMessage(botMessages[5]);
+                displayMessage(botMessages[5]);
             } else {
-                addMessage("Oops! Something went wrong. Please try again later.");
+                displayMessage("Oops! Something went wrong. Please try again later.");
             }
         })
         .catch((error) => {
             console.error('Error:', error);
-            addMessage("Oops! Something went wrong. Please try again later.");
+            displayMessage("Oops! Something went wrong. Please try again later.");
         });
     }
 
@@ -112,9 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Start the conversation
-    addMessage(botMessages[0]);
+    displayMessage(botMessages[0]);
     setTimeout(() => {
-        addMessage(botMessages[1]);
+        displayMessage(botMessages[1]);
         currentStep = 1;
     }, 1000);
 });
