@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KemisAcademy - Advanced Digital Marketing Strategies</title>
+    <title>Dashboard - KemisAcademy</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
@@ -18,19 +18,12 @@
                     <li><a href="{{ url_for('admin_login') }}">Admin Login</a></li>
                 </ul>
             </nav>
-            <h1>Advanced Digital Marketing Strategies</h1>
-            <p class="subtitle">Join our waitlist for the upcoming January 2025 event!</p>
+            <h1>Dashboard</h1>
         </header>
         <main>
-            <div class="chat-container">
-                <div id="chat-output" class="chat-output"></div>
-                <div class="chat-input-container">
-                    <input type="text" id="user-input" placeholder="Type your message here...">
-                    <button id="send-button">Send</button>
-                </div>
-            </div>
+            <h2>Welcome to the Dashboard</h2>
+            <p>This is a placeholder for the dashboard content.</p>
         </main>
     </div>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

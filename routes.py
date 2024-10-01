@@ -27,6 +27,12 @@ def register_routes(app):
     def admin_login():
         return render_template('admin_login.html')
 
+    @app.route('/dashboard')
+    def dashboard():
+        # For now, we'll just render a simple dashboard template
+        # In the future, you might want to add authentication to this route
+        return render_template('dashboard.html')
+
     @app.route('/test_db')
     def test_db():
         try:
