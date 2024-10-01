@@ -1,9 +1,9 @@
 import os
-from extensions import db, app, mail
-from models import Participant
-from sqlalchemy import inspect
+from flask import Flask
 from flask_mail import Mail
+from models import db, Participant
 
+app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "a_secure_secret_key")
 
@@ -16,11 +16,12 @@ app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
 
 db.init_app(app)
-mail.init_app(app)
+mail = Mail(app)
 
 with app.app_context():
     db.create_all()
     print("Database tables created successfully")
+    from sqlalchemy import inspect
     inspector = inspect(db.engine)
     existing_tables = inspector.get_table_names()
     print("Tables in the database:", existing_tables)
