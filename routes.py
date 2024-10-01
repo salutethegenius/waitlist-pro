@@ -1,6 +1,6 @@
 import logging
 from flask import render_template, request, jsonify
-from app import app, db
+from extensions import app, db
 from models import Participant
 from sqlalchemy.exc import SQLAlchemyError
 
