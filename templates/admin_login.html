@@ -20,10 +20,14 @@
             <h1>Admin Login</h1>
         </header>
         <main>
-            <form method="POST" action="{{ url_for('admin_login') }}" class="login-form">
-                {% if error %}
-                <p class="error">{{ error }}</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
                 {% endif %}
+            {% endwith %}
+            <form method="POST" action="{{ url_for('admin_login') }}" class="login-form">
                 <div>
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" required>
