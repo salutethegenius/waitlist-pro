@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function displayMessage(content, isUser = false) {
-        chatMessage.textContent = content;
+        chatMessage.textContent = isUser ? `You: ${content}` : `Bot: ${content}`;
         chatMessage.className = 'chat-message ' + (isUser ? 'user' : 'bot');
     }
 
