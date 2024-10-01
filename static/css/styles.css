@@ -1,10 +1,10 @@
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2ecc71;
-    --accent-color: #e74c3c;
-    --background-color: #0f1524;
-    --text-color: #34495e;
-    --light-text-color: #7f8c8d;
+    --primary-color: #4a90e2;    /* Blue */
+    --secondary-color: #2ecc71;  /* Green */
+    --accent-color: #e74c3c;     /* Red */
+    --background-color: #0f1524; /* Dark blue background */
+    --text-color: #ecf0f1;       /* Light gray for text */
+    --light-text-color: #bdc3c7; /* Lighter gray for secondary text */
 }
 
 body, html {
@@ -16,4 +16,169 @@ body, html {
     line-height: 1.6;
 }
 
-/* Rest of the CSS remains unchanged */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--light-text-color);
+    font-size: 1.2em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.chat-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.chat-messages {
+    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.message.bot {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-start;
+}
+
+.message.user {
+    background-color: var(--secondary-color);
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+}
+
+.chat-input {
+    display: flex;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+#send-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+/* Admin styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid var(--light-text-color);
+    text-align: left;
+}
+
+th {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.login-form, .update-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login-form input, .update-form input, .update-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid var(--light-text-color);
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+.login-form button, .update-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.error {
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.alert-error {
+    background-color: var(--accent-color);
+    color: white;
+}
