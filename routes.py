@@ -1,115 +1,49 @@
-import logging
-from flask import render_template, request, jsonify, redirect, url_for, session, flash
-from extensions import app, db, mail
+from flask import render_template, request, jsonify, url_for
+from app import db
 from models import Participant
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from functools import wraps
-from flask_mail import Message
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+def register_routes(app):
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'admin_logged_in' not in session or not session['admin_logged_in']:
-            return redirect(url_for('admin_login'))
-        return f(*args, **kwargs)
-    return decorated_function
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/register', methods=['POST'])
-def register():
-    try:
+    @app.route('/register', methods=['POST'])
+    def register():
         data = request.json
-        email = data.get('email')
-        phone = data.get('phone')
-        full_name = data.get('fullName')
-
-        if not all([email, phone, full_name]):
-            return jsonify({'success': False, 'message': 'All fields are required'}), 400
-
-        existing_participant = Participant.query.filter_by(email=email).first()
-        if existing_participant:
-            return jsonify({'success': False, 'message': 'Email already registered'}), 400
-
-        new_participant = Participant(email=email, phone=phone, full_name=full_name)
-        db.session.add(new_participant)
-        db.session.commit()
-        
-        logger.info(f'New participant registered: {email}')
-        return jsonify({'success': True, 'message': 'Registration successful!'}), 200
-    except IntegrityError as e:
-        db.session.rollback()
-        error_msg = str(e)
-        logger.error(f'IntegrityError: {error_msg}')
-        return jsonify({'success': False, 'message': 'This email is already registered.'}), 400
-    except SQLAlchemyError as e:
-        db.session.rollback()
-        error_msg = str(e)
-        logger.error(f'Database error: {error_msg}')
-        return jsonify({'success': False, 'message': f'An error occurred while saving to the database: {error_msg}. Please try again.'}), 500
-    except Exception as e:
-        error_msg = str(e)
-        logger.error(f'Unexpected error: {error_msg}')
-        return jsonify({'success': False, 'message': f'An unexpected error occurred: {error_msg}. Please try again.'}), 500
-
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        if username == 'admin' and password == 'password':  # Replace with secure authentication
-            session['admin_logged_in'] = True
-            return redirect(url_for('admin_dashboard'))
-        else:
-            return render_template('admin_login.html', error='Invalid credentials')
-    return render_template('admin_login.html')
-
-@app.route('/admin/logout')
-def admin_logout():
-    session.pop('admin_logged_in', None)
-    return redirect(url_for('admin_login'))
-
-@app.route('/admin/dashboard')
-@admin_required
-def admin_dashboard():
-    participants = Participant.query.all()
-    return render_template('admin_dashboard.html', participants=participants)
-
-@app.route('/admin/delete/<int:participant_id>', methods=['POST'])
-@admin_required
-def delete_participant(participant_id):
-    participant = Participant.query.get_or_404(participant_id)
-    db.session.delete(participant)
-    db.session.commit()
-    return redirect(url_for('admin_dashboard'))
-
-@app.route('/admin/send_update', methods=['POST'])
-@admin_required
-def send_update():
-    subject = request.form.get('subject')
-    message = request.form.get('message')
-    
-    if not subject or not message:
-        flash('Subject and message are required.', 'error')
-        return redirect(url_for('admin_dashboard'))
-    
-    participants = Participant.query.all()
-    
-    for participant in participants:
-        email_message = Message(subject=subject,
-                                recipients=[participant.email],
-                                body=message)
+        participant = Participant(email=data['email'], phone=data['phone'], full_name=data['fullName'])
         try:
-            mail.send(email_message)
-            logger.info(f'Update email sent to {participant.email}')
-        except Exception as e:
-            logger.error(f'Failed to send email to {participant.email}: {str(e)}')
-            flash(f'Failed to send email to {participant.email}', 'error')
-    
-    flash('Update sent successfully to all participants.', 'success')
-    return redirect(url_for('admin_dashboard'))
+            db.session.add(participant)
+            db.session.commit()
+            return jsonify({'success': True}), 200
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'Email already registered'}), 400
+        except SQLAlchemyError:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': 'An error occurred'}), 500
+
+    @app.route('/admin_login')
+    def admin_login():
+        return render_template('admin_login.html')
+
+    @app.route('/test_db')
+    def test_db():
+        try:
+            participants = Participant.query.all()
+            return jsonify({'success': True, 'message': f'Database connection successful. {len(participants)} participants found.'}), 200
+        except SQLAlchemyError as e:
+            return jsonify({'success': False, 'message': f'Database connection failed: {str(e)}'}), 500
+
+    @app.route('/test_create_participant')
+    def test_create_participant():
+        try:
+            new_participant = Participant(email='test@example.com', phone='1234567890', full_name='Test User')
+            db.session.add(new_participant)
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Test participant created successfully.'}), 200
+        except SQLAlchemyError as e:
+            db.session.rollback()
+            return jsonify({'success': False, 'message': f'Failed to create test participant: {str(e)}'}), 500
+
+    # Add other routes here

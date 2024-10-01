@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from app import db
 
 class Participant(db.Model):
     __tablename__ = 'participants'
@@ -13,3 +11,6 @@ class Participant(db.Model):
         self.email = email
         self.phone = phone
         self.full_name = full_name
+
+    def __repr__(self):
+        return f'<Participant {self.email}>'
