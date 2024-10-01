@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const chatMessage = document.getElementById('chat-message');
+    const chatOutput = document.getElementById('chat-output');
     const userInput = document.getElementById('user-input');
     const sendButton = document.getElementById('send-button');
 
@@ -20,8 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function displayMessage(content, isUser = false) {
-        chatMessage.textContent = isUser ? `You: ${content}` : `Bot: ${content}`;
-        chatMessage.className = 'chat-message ' + (isUser ? 'user' : 'bot');
+        const messageElement = document.createElement('div');
+        messageElement.textContent = isUser ? `You: ${content}` : `Bot: ${content}`;
+        messageElement.className = `message ${isUser ? 'user' : 'bot'}`;
+        chatOutput.appendChild(messageElement);
+        chatOutput.scrollTop = chatOutput.scrollHeight;
     }
 
     function handleUserInput() {

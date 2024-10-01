@@ -56,32 +56,35 @@ nav ul li a {
 
 .chat-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    padding: 10px;
+    padding: 20px;
     max-width: 800px;
     margin: 0 auto;
+    height: 400px;
 }
 
-.chat-message {
+.chat-output {
     flex-grow: 1;
-    padding: 5px 10px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 5px 0 0 5px;
-    color: var(--text-color);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    border-radius: 5px;
+}
+
+.chat-input-container {
+    display: flex;
 }
 
 #user-input {
-    flex-grow: 2;
+    flex-grow: 1;
     padding: 10px;
     border: none;
     background-color: rgba(255, 255, 255, 0.1);
     color: var(--text-color);
-    border-radius: 0;
+    border-radius: 5px 0 0 5px;
 }
 
 #send-button {
@@ -162,4 +165,22 @@ th {
 .alert-error {
     background-color: var(--accent-color);
     color: white;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.user {
+    background-color: var(--primary-color);
+    color: white;
+    align-self: flex-end;
+}
+
+.bot {
+    background-color: var(--secondary-color);
+    color: white;
+    align-self: flex-start;
 }
