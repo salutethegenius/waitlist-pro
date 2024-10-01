@@ -24,18 +24,18 @@ body, html {
 
 header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 h1 {
     color: var(--primary-color);
-    font-size: 2.5em;
+    font-size: 2em;
     margin-bottom: 10px;
 }
 
 .subtitle {
     color: var(--light-text-color);
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 nav ul {
@@ -58,20 +58,20 @@ nav ul li a {
     display: flex;
     flex-direction: column;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-    max-width: 800px;
+    border-radius: 8px;
+    padding: 10px;
+    max-width: 600px;
     margin: 0 auto;
-    height: 400px;
+    height: 300px;
 }
 
 .chat-output {
     flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 20px;
-    padding: 10px;
+    margin-bottom: 10px;
+    padding: 8px;
     background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 .chat-input-container {
@@ -80,20 +80,22 @@ nav ul li a {
 
 #user-input {
     flex-grow: 1;
-    padding: 10px;
+    padding: 8px;
     border: none;
     background-color: rgba(255, 255, 255, 0.1);
     color: var(--text-color);
-    border-radius: 5px 0 0 5px;
+    border-radius: 4px 0 0 4px;
+    font-size: 0.9em;
 }
 
 #send-button {
-    padding: 10px 20px;
+    padding: 8px 16px;
     border: none;
     background-color: var(--accent-color);
     color: white;
     cursor: pointer;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9em;
 }
 
 /* Admin styles (unchanged) */
@@ -168,9 +170,10 @@ th {
 }
 
 .message {
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
 }
 
 .user {
