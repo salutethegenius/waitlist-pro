@@ -33,4 +33,4 @@ def register():
         return jsonify({"success": False, "message": "An error occurred while saving to the database. Please try again."}), 500
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({"success": False, message: "An unexpected error occurred. Please try again."}), 500
+        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
