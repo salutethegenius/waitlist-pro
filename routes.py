@@ -2,7 +2,7 @@ import logging
 from flask import render_template, request, jsonify, redirect, url_for, session, flash
 from extensions import app, db, mail
 from models import Participant
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from functools import wraps
 from flask_mail import Message
 from datetime import datetime
@@ -22,6 +22,14 @@ def admin_required(f):
 def index():
     return render_template('index.html')
 
+def send_confirmation_email(participant):
+    token = participant.generate_confirmation_token()
+    confirm_url = url_for('confirm_email', token=token, _external=True)
+    html = render_template('email/confirm_email.html', confirm_url=confirm_url)
+    subject = "Please confirm your email"
+    msg = Message(subject=subject, recipients=[participant.email], html=html)
+    mail.send(msg)
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -31,23 +39,53 @@ def register():
         full_name = data.get('fullName')
 
         if not all([email, phone, full_name]):
-            return jsonify({"success": False, "message": "All fields are required"}), 400
+            return jsonify({'success': False, 'message': 'All fields are required'}), 400
 
-        new_participant = Participant(email=email, phone=phone, full_name=full_name)
+        existing_participant = Participant.query.filter_by(email=email).first()
+        if existing_participant:
+            return jsonify({'success': False, 'message': 'Email already registered'}), 400
+
+        new_participant = Participant(email=email, phone=phone, full_name=full_name, confirmed=False)
         db.session.add(new_participant)
         db.session.commit()
         
-        logger.info(f"New participant registered: {email}")
-        return jsonify({"success": True, "message": "Registration successful!"}), 200
+        send_confirmation_email(new_participant)
+        
+        logger.info(f'New participant registered: {email}')
+        return jsonify({'success': True, 'message': 'Registration successful! Please check your email to confirm your registration.'}), 200
+    except IntegrityError as e:
+        db.session.rollback()
+        error_msg = str(e)
+        logger.error(f'IntegrityError: {error_msg}')
+        return jsonify({'success': False, 'message': 'This email is already registered.'}), 400
     except SQLAlchemyError as e:
         db.session.rollback()
         error_msg = str(e)
-        logger.error(f"Database error: {error_msg}")
-        return jsonify({"success": False, "message": f"An error occurred while saving to the database: {error_msg}. Please try again."}), 500
+        logger.error(f'Database error: {error_msg}')
+        return jsonify({'success': False, 'message': f'An error occurred while saving to the database: {error_msg}. Please try again.'}), 500
     except Exception as e:
         error_msg = str(e)
-        logger.error(f"Unexpected error: {error_msg}")
-        return jsonify({"success": False, "message": f"An unexpected error occurred: {error_msg}. Please try again."}), 500
+        logger.error(f'Unexpected error: {error_msg}')
+        return jsonify({'success': False, 'message': f'An unexpected error occurred: {error_msg}. Please try again.'}), 500
+
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = Participant.confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('index'))
+    
+    user = Participant.query.filter_by(email=email).first_or_404()
+    if user.confirmed:
+        flash('Account already confirmed. Please login.', 'success')
+    else:
+        user.confirmed = True
+        user.confirmed_on = datetime.utcnow()
+        db.session.add(user)
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!', 'success')
+    return redirect(url_for('index'))
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
