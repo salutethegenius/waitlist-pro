@@ -1,10 +1,10 @@
 :root {
     --primary-color: #4a90e2;    /* Blue */
-    --secondary-color: #2ecc71;  /* Green */
+    --secondary-color: #65c97a;  /* Green */
     --accent-color: #e74c3c;     /* Red */
-    --background-color: #0f1524; /* Dark blue background */
-    --text-color: #ecf0f1;       /* Light gray for text */
-    --light-text-color: #bdc3c7; /* Lighter gray for secondary text */
+    --background-color: #121212; /* Dark blue background */
+    --text-color: #ffffff;       /* Light gray for text */
+    --light-text-color: #d1d1d1; /* Lighter gray for secondary text */
 }
 
 body, html {

@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <header>
-            <img src="https://kemisdigital.com/cdn/shop/files/0eb52e9522bee17a6ae72cdeda78df1d_1200_80.webp?v=1713491076&width=300" alt="Kemis Academy Logo" width="200">
+            <img src="{{ url_for('static', filename='images/kemislogo.webp') }}" alt="Kemis Academy Logo" width="200">
             <nav>
                 <ul>
                     <li><a href="{{ url_for('index') }}">Home</a></li>
