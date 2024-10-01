@@ -29,8 +29,10 @@ def register():
         return jsonify({"success": True, "message": "Registration successful!"}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
-        logger.error(f"Database error: {str(e)}")
-        return jsonify({"success": False, "message": "An error occurred while saving to the database. Please try again."}), 500
+        error_msg = str(e)
+        logger.error(f"Database error: {error_msg}")
+        return jsonify({"success": False, "message": f"An error occurred while saving to the database: {error_msg}. Please try again."}), 500
     except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        return jsonify({"success": False, "message": "An unexpected error occurred. Please try again."}), 500
+        error_msg = str(e)
+        logger.error(f"Unexpected error: {error_msg}")
+        return jsonify({"success": False, "message": f"An unexpected error occurred: {error_msg}. Please try again."}), 500
