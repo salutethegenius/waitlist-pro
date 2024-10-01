@@ -14,6 +14,7 @@ def register_routes(app):
     @app.route('/register', methods=['POST'])
     def register():
         data = request.json
+        logger.info(f"Received registration data: {data}")
         if not data:
             logger.error("No JSON data received in the request")
             return jsonify({'success': False, 'message': 'No data provided'}), 400
@@ -35,6 +36,9 @@ def register_routes(app):
         except KeyError as e:
             logger.error(f"KeyError during registration: {str(e)}")
             return jsonify({'success': False, 'message': f'Missing required field: {str(e)}'}), 400
+        except Exception as e:
+            logger.error(f"Unexpected error during registration: {str(e)}")
+            return jsonify({'success': False, 'message': 'An unexpected error occurred'}), 500
 
     @app.route('/dashboard')
     def dashboard():
