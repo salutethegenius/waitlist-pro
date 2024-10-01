@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="50" viewBox="0 0 200 50">
+  <style>
+    .logo-text { font: bold 24px Arial, sans-serif; fill: #4a90e2; }
+    .tagline { font: italic 12px Arial, sans-serif; fill: #f5a623; }
+  </style>
+  <text x="10" y="30" class="logo-text">Kemis Academy</text>
+  <text x="10" y="45" class="tagline">Advanced Digital Marketing Strategies</text>
+</svg>
