@@ -14,17 +14,27 @@ def register_routes(app):
     @app.route('/register', methods=['POST'])
     def register():
         data = request.json
-        participant = Participant(email=data['email'], phone=data['phone'], full_name=data['fullName'])
+        if not data:
+            logger.error("No JSON data received in the request")
+            return jsonify({'success': False, 'message': 'No data provided'}), 400
+        
         try:
+            participant = Participant(email=data['email'], phone=data['phone'], full_name=data['fullName'])
             db.session.add(participant)
             db.session.commit()
+            logger.info(f"New participant registered: {participant.email}")
             return jsonify({'success': True}), 200
         except IntegrityError:
             db.session.rollback()
+            logger.warning(f"Attempt to register with existing email: {data.get('email')}")
             return jsonify({'success': False, 'message': 'Email already registered'}), 400
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             db.session.rollback()
-            return jsonify({'success': False, 'message': 'An error occurred'}), 500
+            logger.error(f"SQLAlchemyError during registration: {str(e)}")
+            return jsonify({'success': False, 'message': 'An error occurred during registration'}), 500
+        except KeyError as e:
+            logger.error(f"KeyError during registration: {str(e)}")
+            return jsonify({'success': False, 'message': f'Missing required field: {str(e)}'}), 400
 
     @app.route('/dashboard')
     def dashboard():
@@ -36,4 +46,5 @@ def register_routes(app):
             participants = Participant.query.all()
             return jsonify({'success': True, 'message': f'Database connection successful. {len(participants)} participants found.'}), 200
         except SQLAlchemyError as e:
+            logger.error(f"Database connection failed: {str(e)}")
             return jsonify({'success': False, 'message': f'Database connection failed: {str(e)}'}), 500
