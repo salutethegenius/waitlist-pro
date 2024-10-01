@@ -22,14 +22,6 @@ def admin_required(f):
 def index():
     return render_template('index.html')
 
-def send_confirmation_email(participant):
-    token = participant.generate_confirmation_token()
-    confirm_url = url_for('confirm_email', token=token, _external=True)
-    html = render_template('email/confirm_email.html', confirm_url=confirm_url)
-    subject = "Please confirm your email"
-    msg = Message(subject=subject, recipients=[participant.email], html=html)
-    mail.send(msg)
-
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -45,10 +37,8 @@ def register():
         db.session.add(new_participant)
         db.session.commit()
         
-        send_confirmation_email(new_participant)
-        
         logger.info(f"New participant registered: {email}")
-        return jsonify({"success": True, "message": "Registration successful! Please check your email to confirm your registration."}), 200
+        return jsonify({"success": True, "message": "Registration successful!"}), 200
     except SQLAlchemyError as e:
         db.session.rollback()
         error_msg = str(e)
@@ -58,25 +48,6 @@ def register():
         error_msg = str(e)
         logger.error(f"Unexpected error: {error_msg}")
         return jsonify({"success": False, "message": f"An unexpected error occurred: {error_msg}. Please try again."}), 500
-
-@app.route('/confirm/<token>')
-def confirm_email(token):
-    try:
-        email = Participant.confirm_token(token)
-    except:
-        flash('The confirmation link is invalid or has expired.', 'danger')
-        return redirect(url_for('index'))
-    
-    user = Participant.query.filter_by(email=email).first_or_404()
-    if user.confirmed:
-        flash('Account already confirmed. Please login.', 'success')
-    else:
-        user.confirmed = True
-        user.confirmed_on = datetime.now()
-        db.session.add(user)
-        db.session.commit()
-        flash('You have confirmed your account. Thanks!', 'success')
-    return redirect(url_for('index'))
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():

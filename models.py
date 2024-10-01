@@ -8,8 +8,8 @@ class Participant(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=False)
     full_name = db.Column(db.String(100), nullable=False)
-    confirmed = db.Column(db.Boolean, default=False)
-    confirmed_on = db.Column(db.DateTime, nullable=True)
+    confirmed = db.Column(db.Boolean, default=True)  # Changed default to True
+    confirmed_on = db.Column(db.DateTime, default=datetime.utcnow)  # Set default to current time
 
     def generate_confirmation_token(self):
         serializer = Serializer(current_app.config['SECRET_KEY'])
