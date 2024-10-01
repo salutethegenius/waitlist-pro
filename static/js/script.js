@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayMessage(content, isUser = false) {
         const messageElement = document.createElement('div');
-        messageElement.textContent = isUser ? `You: ${content}` : `Bot: ${content}`;
+        messageElement.textContent = content;
         messageElement.className = `message ${isUser ? 'user' : 'bot'}`;
         chatOutput.appendChild(messageElement);
         chatOutput.scrollTop = chatOutput.scrollHeight;
