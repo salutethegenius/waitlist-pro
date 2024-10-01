@@ -9,3 +9,4 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 mail = Mail()
+mail.init_app(app)
