@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.getElementById('send-button');
 
     const botMessages = [
-        "Welcome to Kemis Academy Advanced Digital Marketing Strategies seminar! 🎉",
+        "Welcome to KemisDigital Advanced Digital Marketing Strategies Waitlist! 🎉",
         "Our upcoming event is in January 2025. Are you interested in joining our waitlist?",
         "Great! Please provide your email address.",
         "Thank you! Now, please enter your phone number.",
