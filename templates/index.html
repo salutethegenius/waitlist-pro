@@ -10,6 +10,12 @@
     <div class="container">
         <header>
             <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="Kemis Academy Logo" width="200">
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('admin_login') }}">Admin Login</a></li>
+                </ul>
+            </nav>
             <h1>Advanced Digital Marketing Strategies Seminar</h1>
             <p>Join our waitlist for the upcoming January 2025 event!</p>
         </header>
