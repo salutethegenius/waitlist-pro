@@ -41,10 +41,12 @@ h1 {
 nav ul {
     list-style-type: none;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav ul li {
-    display: inline;
     margin: 0 10px;
 }
 
@@ -62,7 +64,7 @@ nav ul li a {
     padding: 10px;
     max-width: 600px;
     margin: 0 auto;
-    height: 200px;
+    height: 300px;
 }
 
 .chat-output {
@@ -98,7 +100,6 @@ nav ul li a {
     font-size: 0.9em;
 }
 
-/* Admin styles (unchanged) */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -186,4 +187,62 @@ th {
     background-color: var(--secondary-color);
     color: white;
     align-self: flex-start;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .subtitle {
+        font-size: 0.9em;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul li {
+        margin: 5px 0;
+    }
+
+    .chat-container {
+        height: 250px;
+    }
+
+    table {
+        font-size: 0.9em;
+    }
+
+    th, td {
+        padding: 5px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.2em;
+    }
+
+    .subtitle {
+        font-size: 0.8em;
+    }
+
+    .chat-container {
+        height: 200px;
+    }
+
+    #user-input, #send-button {
+        font-size: 0.8em;
+    }
+
+    table {
+        font-size: 0.8em;
+    }
 }
